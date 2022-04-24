@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const ENDPOINT = "https://api.ca-tech.dev/v1/security/";
+const ENDPOINT = process.env.VUE_APP_ENDPOINT_PATH;
 
 export default {
-  register(email, password, firstName, lastName) {
-    const user = { email, password, firstName, lastName };
+  register(email, first_name, last_name, username, plainTextPassword) {
+    const user = { email, first_name, last_name, username, plainTextPassword };
     return axios.post(ENDPOINT + "register", user);
   },
 

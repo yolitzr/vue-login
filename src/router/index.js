@@ -6,13 +6,19 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/home",
+    path: "/welcome",
     name: "home",
     component: HomeView,
-    // beforeEnter: (to, from, next) => {
-    //   if (to.name !== "login" && !isAuthenticated) next({ name: "login" });
-    //   else next();
-    // },
+    beforeEnter(to, from, next) {
+      // check localStorage //
+      if (localStorage.getItem("user-data")) {
+        next();
+      } else {
+        next({
+          name: "login", // back to safety route //
+        });
+      }
+    },
   },
   {
     path: "/register",

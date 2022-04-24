@@ -11,9 +11,9 @@
           <label for="#password" name="password">Password</label>
           <input v-model="password" type="password" id="password" />
         </div>
-        <p v-if="error">Datos invalidos</p>
+        <p>{{ errorMessage }}</p>
         <div class="submit">
-          <input type="submit" value="Login" />
+          <input type="submit" value="Login" @click="getLogin" />
         </div>
       </form>
     </div>
@@ -28,28 +28,41 @@ export default {
     return {
       email: "",
       password: "",
-      error: false,
+      errorMessage: "",
     };
   },
 
   methods: {
-    async getLogin() {
-      try {
-        let result = await auth.login(this.email, this.password);
-        if (result.status === 200) {
-          localStorage.setItem("user-data", result.data.token);
-          this.$router.push("/home");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    getLogin() {
+      auth
+        .login(this.email, this.password)
+        .then((response) => {
+          if (response.status === 200) {
+            localStorage.setItem("user-data", response.data.token);
+            alert("This login was succefull!", 3000);
+            this.$router.push("/welcome");
+          } else {
+            return (this.errorMessage = response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      // try {
+      //   if (result.status === 200) {
+      //     localStorage.setItem("user-data", result.data.token);
+      //     this.$router.push("/welcome");
+      //   }
+      // } catch (error) {
+      //   this.errorMessage = error.message;
+      // }
     },
   },
 
   mounted() {
     let userLooged = localStorage.getItem("user-data");
     if (userLooged) {
-      this.$router.push("/home");
+      this.$router.push("/welcome");
     }
   },
 };

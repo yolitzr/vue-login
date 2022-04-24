@@ -4,11 +4,15 @@
     <div class="form">
       <form action @submit.prevent="getRegister">
         <div class="email">
-          <label for="#email" name="username">Email</label>
+          <label for="#email" name="email">Email</label>
           <input v-model="email" type="email" id="email" required />
         </div>
         <div class="email">
           <label for="#name" name="username">Name</label>
+          <input v-model="username" type="text" id="firstName" />
+        </div>
+        <div class="email">
+          <label for="#firstName" name="firstName">Last Name</label>
           <input v-model="firstName" type="text" id="firstName" />
         </div>
         <div class="email">
@@ -17,11 +21,11 @@
         </div>
         <div class="password">
           <label for="#password" name="password">Password</label>
-          <input v-model="password" type="password" id="password" />
+          <input v-model="password.first" type="password" id="password" />
         </div>
         <div class="password">
           <label for="#password" name="password">Repetir Password</label>
-          <input v-model="passwordRepeat" type="password" id="passwordRepeat" />
+          <input v-model="password.second" type="password" id="password" />
         </div>
         <div class="submit">
           <input type="submit" value="Sign Up" />
@@ -39,10 +43,10 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
-      passwordRepeat: "",
+      password: { first: "", second: "" },
       firstName: "",
       lastName: "",
+      username: "",
     };
   },
 
@@ -51,11 +55,12 @@ export default {
       try {
         await auth.register(
           this.email,
-          this.password,
           this.firstName,
-          this.lastName
+          this.lastName,
+          this.username,
+          this.password
         );
-        this.$router.push("/Login");
+        this.$router.push("/login");
       } catch (error) {
         console.log(error);
       }
@@ -64,7 +69,7 @@ export default {
   mounted() {
     let userLooged = localStorage.getItem("user-data");
     if (userLooged) {
-      this.$router.push("/home");
+      this.$router.push("/welcome");
     }
   },
 };
