@@ -9,6 +9,10 @@ const routes = [
     path: "/home",
     name: "home",
     component: HomeView,
+    // beforeEnter: (to, from, next) => {
+    //   if (to.name !== "login" && !isAuthenticated) next({ name: "login" });
+    //   else next();
+    // },
   },
   {
     path: "/register",
@@ -31,6 +35,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes,
 });
 

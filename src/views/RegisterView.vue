@@ -61,6 +61,12 @@ export default {
       }
     },
   },
+  mounted() {
+    let userLooged = localStorage.getItem("user-data");
+    if (userLooged) {
+      this.$router.push("/home");
+    }
+  },
 };
 </script>
 

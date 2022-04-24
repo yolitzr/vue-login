@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import auth from "@/auth/";
 export default {
   name: "LoginView",
   data() {
@@ -32,9 +33,24 @@ export default {
   },
 
   methods: {
-    getLogin() {
-      console.log(this.email, this.password);
+    async getLogin() {
+      try {
+        let result = await auth.login(this.email, this.password);
+        if (result.status === 200) {
+          localStorage.setItem("user-data", result.data.token);
+          this.$router.push("/home");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
+  },
+
+  mounted() {
+    let userLooged = localStorage.getItem("user-data");
+    if (userLooged) {
+      this.$router.push("/home");
+    }
   },
 };
 </script>
